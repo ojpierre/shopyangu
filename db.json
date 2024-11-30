@@ -1,4 +1,25 @@
 {
-  "shops": [],
-  "products": []
+  "shops": [
+    {
+      "name": "Sneakers Shop",
+      "description": "Your favourite Shoe Shop",
+      "logo": "",
+      "id": "35de"
+    },
+    {
+      "id": "f6a5",
+      "name": "Trousers Shop",
+      "description": "The best Trousers",
+      "logo": ""
+    }
+  ],
+  "products": [
+    {
+      "id": "eb5f",
+      "name": "Khaki Trousers",
+      "description": "Black",
+      "price": 18,
+      "stock": 3
+    }
+  ]
 }
