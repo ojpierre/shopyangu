@@ -1,6 +1,6 @@
 import useSWR, { mutate } from 'swr'
 
-const API_URL = 'http://localhost:3001'
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const fetcher = async (url: string) => {
   const token = localStorage.getItem('token')
