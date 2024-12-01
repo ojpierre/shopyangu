@@ -2,6 +2,9 @@ import Link from "next/link";
 import ProductList from "@/components/ProductList";
 
 export default function ProductsPage() {
+  // Replace this with a valid shopId if applicable.
+  const shopId = "default-shop-id"; // Update with actual logic or state management
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -13,7 +16,8 @@ export default function ProductsPage() {
           Add New Product
         </Link>
       </div>
-      <ProductList />
+      {/* Pass the required shopId prop */}
+      <ProductList shopId={shopId} />
     </div>
   );
 }

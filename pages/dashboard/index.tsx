@@ -14,6 +14,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+interface Product {
+  price: number;
+  stockLevel: number;
+  shopId: string;
+}
+
+interface Shop {
+  id: string;
+  name: string;
+}
+
 export default function Dashboard() {
   const { shops, isLoading: isLoadingShops } = useShops();
   const { products, isLoading: isLoadingProducts } = useProducts();
@@ -22,39 +33,47 @@ export default function Dashboard() {
 
   const totalShops = shops.length;
   const totalProducts = products.length;
+
+  // Explicit types for `reduce`
   const totalValue = products.reduce(
-    (sum, product) => sum + product.price * product.stockLevel,
+    (sum: number, product: Product) => sum + product.price * product.stockLevel,
     0
   );
   const totalStock = products.reduce(
-    (sum, product) => sum + product.stockLevel,
+    (sum: number, product: Product) => sum + product.stockLevel,
     0
   );
 
+  // Explicit types for `filter`
   const stockStatusData = [
     {
       name: "In Stock",
-      value: products.filter((p) => p.stockLevel > 5).length,
+      value: products.filter((p: Product) => p.stockLevel > 5).length,
     },
     {
       name: "Low Stock",
-      value: products.filter((p) => p.stockLevel > 0 && p.stockLevel <= 5)
-        .length,
+      value: products.filter(
+        (p: Product) => p.stockLevel > 0 && p.stockLevel <= 5
+      ).length,
     },
     {
       name: "Out of Stock",
-      value: products.filter((p) => p.stockLevel === 0).length,
+      value: products.filter((p: Product) => p.stockLevel === 0).length,
     },
   ];
 
+  // Explicit types for `map` and `sort`
   const topShopsByStock = shops
-    .map((shop) => ({
+    .map((shop: Shop) => ({
       name: shop.name,
       stockLevel: products
-        .filter((product) => product.shopId === shop.id)
-        .reduce((sum, product) => sum + product.stockLevel, 0),
+        .filter((product: Product) => product.shopId === shop.id)
+        .reduce((sum: number, product: Product) => sum + product.stockLevel, 0),
     }))
-    .sort((a, b) => b.stockLevel - a.stockLevel)
+    .sort(
+      (a: { stockLevel: number }, b: { stockLevel: number }) =>
+        b.stockLevel - a.stockLevel
+    )
     .slice(0, 5);
 
   return (

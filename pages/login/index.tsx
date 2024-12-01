@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@shopyangu.com"); // Pre-fill with admin email
+  const [password, setPassword] = useState("admin123"); // Pre-fill with admin password
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -22,8 +22,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         console.log("Login successful, navigating to dashboard...");
-        window.location.href = "/dashboard";
-        // Navigate to the dashboard
+        window.location.href = "/dashboard"; // Navigate to the dashboard
       } else {
         const errorData = await response.json();
         console.error("Login error response:", errorData); // Debugging line

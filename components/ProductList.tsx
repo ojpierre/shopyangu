@@ -5,7 +5,11 @@ import { useProducts, deleteProduct } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function ProductList() {
+type ProductListProps = {
+  shopId: string;
+};
+
+export default function ProductList({ shopId }: ProductListProps) {
   const router = useRouter();
   const { products, isLoading, isError, mutate } = useProducts();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -14,27 +18,17 @@ export default function ProductList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [sortField, setSortField] = useState("name");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading products</div>;
 
-  const handleDelete = async () => {
-    if (productToDelete) {
-      try {
-        await deleteProduct(productToDelete);
-        mutate();
-        setShowDeleteModal(false);
-        setProductToDelete(null);
-      } catch (error) {
-        console.error("Error deleting product:", error);
-      }
-    }
-  };
-
+  // Filter products by the current shop and search term
   const filteredProducts = products
-    .filter((product: any) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (product: any) =>
+        product.shopId === shopId && // Match products to the current shop
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a: any, b: any) => {
       if (a[sortField] < b[sortField]) return sortDirection === "asc" ? -1 : 1;
@@ -57,6 +51,19 @@ export default function ProductList() {
     } else {
       setSortField(field);
       setSortDirection("asc");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (productToDelete) {
+      try {
+        await deleteProduct(productToDelete);
+        mutate(); // Revalidate product list
+        setShowDeleteModal(false);
+        setProductToDelete(null);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
     }
   };
 
@@ -98,9 +105,6 @@ export default function ProductList() {
                   (sortDirection === "asc" ? "▲" : "▼")}
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Shop
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -114,9 +118,6 @@ export default function ProductList() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {product.stockLevel}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {product.shop.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link

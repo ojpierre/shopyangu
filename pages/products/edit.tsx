@@ -43,17 +43,21 @@ export default function EditProduct() {
       <h1 className="text-2xl font-bold mb-4">Edit Product</h1>
       <form onSubmit={handleSubmit} className="max-w-md">
         <div className="mb-4">
-          <label htmlFor="name" className="block mb-2">Name:</label>
+          <label htmlFor="name" className="block mb-2">
+            Name:
+          </label>
           <input
             type="text"
             id="name"
-            e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             required
             className="w-full px-3 py-2 border rounded"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="description" className="block mb-2">Description:</label>
+          <label htmlFor="description" className="block mb-2">
+            Description:
+          </label>
           <textarea
             id="description"
             value={description}
@@ -63,7 +67,9 @@ export default function EditProduct() {
           ></textarea>
         </div>
         <div className="mb-4">
-          <label htmlFor="price" className="block mb-2">Price:</label>
+          <label htmlFor="price" className="block mb-2">
+            Price:
+          </label>
           <input
             type="number"
             id="price"
@@ -76,7 +82,9 @@ export default function EditProduct() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="stock" className="block mb-2">Stock:</label>
+          <label htmlFor="stock" className="block mb-2">
+            Stock:
+          </label>
           <input
             type="number"
             id="stock"
@@ -87,9 +95,14 @@ export default function EditProduct() {
             className="w-full px-3 py-2 border rounded"
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Update Product</button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Update Product
+        </button>
       </form>
     </div>
-  )
+  );
 }
 

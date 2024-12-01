@@ -41,6 +41,11 @@ const productSchema = z.object({
 
 type ProductFormData = z.infer<typeof productSchema>;
 
+interface Shop {
+  id: string;
+  name: string;
+}
+
 interface ProductFormProps {
   initialData?: Partial<ProductFormData>;
   onSubmit: (data: ProductFormData) => Promise<void>;
@@ -162,7 +167,7 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
             <SelectValue placeholder="Select a shop" />
           </SelectTrigger>
           <SelectContent>
-            {shops.map((shop) => (
+            {shops.map((shop: Shop) => (
               <SelectItem key={shop.id} value={shop.id}>
                 {shop.name}
               </SelectItem>

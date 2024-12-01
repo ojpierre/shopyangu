@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useShop } from "@/lib/api";
-import { ProductList } from "@/components/ProductList";
+import ProductList from "@/components/ProductList";
+import Image from "next/image";
 
 export default function ShopDetails() {
   const router = useRouter();
@@ -16,10 +17,12 @@ export default function ShopDetails() {
       <h1 className="text-3xl font-bold mb-4">{shop.name}</h1>
       <p className="mb-4">{shop.description}</p>
       {shop.logo && (
-        <img
+        <Image
           src={shop.logo}
           alt={`${shop.name} logo`}
           className="w-32 h-32 object-contain mb-4"
+          width={128}
+          height={128}
         />
       )}
       <Link
@@ -35,6 +38,7 @@ export default function ShopDetails() {
       >
         Add New Product
       </Link>
+      {/* Pass shopId to the ProductList component */}
       <ProductList shopId={id as string} />
     </div>
   );
