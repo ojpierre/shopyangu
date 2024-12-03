@@ -31,42 +31,43 @@ export default function Dashboard() {
 
   if (isLoadingShops || isLoadingProducts) return <div>Loading...</div>;
 
-  const totalShops = shops.length;
-  const totalProducts = products.length;
+  // Fallback to empty arrays if data is undefined
+  const shopList = shops || [];
+  const productList = products || [];
 
-  // Explicit types for `reduce`
-  const totalValue = products.reduce(
+  const totalShops = shopList.length;
+  const totalProducts = productList.length;
+
+  const totalValue = productList.reduce(
     (sum: number, product: Product) => sum + product.price * product.stockLevel,
     0
   );
-  const totalStock = products.reduce(
+  const totalStock = productList.reduce(
     (sum: number, product: Product) => sum + product.stockLevel,
     0
   );
 
-  // Explicit types for `filter`
   const stockStatusData = [
     {
       name: "In Stock",
-      value: products.filter((p: Product) => p.stockLevel > 5).length,
+      value: productList.filter((p: Product) => p.stockLevel > 5).length,
     },
     {
       name: "Low Stock",
-      value: products.filter(
+      value: productList.filter(
         (p: Product) => p.stockLevel > 0 && p.stockLevel <= 5
       ).length,
     },
     {
       name: "Out of Stock",
-      value: products.filter((p: Product) => p.stockLevel === 0).length,
+      value: productList.filter((p: Product) => p.stockLevel === 0).length,
     },
   ];
 
-  // Explicit types for `map` and `sort`
-  const topShopsByStock = shops
+  const topShopsByStock = shopList
     .map((shop: Shop) => ({
       name: shop.name,
-      stockLevel: products
+      stockLevel: productList
         .filter((product: Product) => product.shopId === shop.id)
         .reduce((sum: number, product: Product) => sum + product.stockLevel, 0),
     }))
